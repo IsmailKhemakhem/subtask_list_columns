@@ -1,6 +1,9 @@
 require 'redmine'
 
 require_dependency 'subtask_list_columns_lib'
+Rails.configuration.to_prepare do
+  require_dependency 'subtask_list_columns_project_helper_patch'
+end
 
 Rails.configuration.to_prepare do
   unless IssuesHelper.included_modules.include?(SubtaskListColumnsLib)

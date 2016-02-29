@@ -1,0 +1,86 @@
+
+<form id="subtask_list_columns">
+<table>
+<tr>
+   <td> 
+     <fieldset>
+        <legend>Available columns</legend>
+     </fieldset>
+   </td>
+   <td></td>
+   <td>
+     <fieldset>
+        <legend>Selected columns</legend>
+     </fieldset>
+   </td>
+<tr>
+    <td>
+      <select id="available_fields_list" size="25">
+            <% @allColumns.each do |col| %>
+              <option value="" >
+                <%= col['name'] %>
+              </option>
+            <% end %>
+          </select>
+</td>
+<td>
+<input type="button" name="addItem" value=">" onclick="selectItem()">
+<input type="button" name="removeItem" value="<" onclick="unselectItem()">
+</td>
+<td>
+<select id="selected_fields_list" size="25" style="width:120px">
+</select>
+</td>
+</tr>
+<tr>
+   <td>
+         <button name="save" value=1 onclick="saveAll()"><%= l(:button_save) %></button>
+
+   </td>
+</tr>
+</table>
+
+<input id="selectedColumns" name="selectedColumns" type="hidden"  value="0" />
+</form>
+<script type="text/javascript">
+
+    function selectItem()
+    {
+       var availableFields = document.getElementById("available_fields_list");
+       var selectedFields = document.getElementById("selected_fields_list");
+       var option = document.createElement("option");
+       option.text = availableFields.options[availableFields.selectedIndex].text;
+       selectedFields.add(option);
+       availableFields.remove(availableFields.selectedIndex);
+    }
+    function unselectItem()
+    {
+       var availableFields = document.getElementById("available_fields_list");
+       var selectedFields = document.getElementById("selected_fields_list");
+       var option = document.createElement("option");
+       option.text = selectedFields.options[selectedFields.selectedIndex].text;
+       availableFields.add(option);
+       selectedFields.remove(selectedFields.selectedIndex);
+    }
+    function saveAll()
+    {
+       var selectedCols = document.getElementById('selected_fields_list').getElementsByTagName('option');
+       var config = "";
+       for(var i = 0; i < selectedCols.length; i++)
+       {
+           if(i != selectedCols.length -1)
+           {
+               config  = config + selectedCols[i].text+"|";
+           }
+           else
+           {
+               config  = config + selectedCols[i].text;
+           }
+       }
+       document.getElementById('selectedColumns').value = config
+       document.forms["subtask_list_columns"].submit();
+       
+    }
+
+
+</script>
